@@ -7,6 +7,7 @@
        server: "{{ bigip_server }}"
        user: "{{ bigip_username }}"
        password: "{{ bigip_password }}"
+       server_port: "{{ bigip_port }}"
        name: "10.128.20.104"
        host: "10.128.20.104"
        validate_certs: False
@@ -16,6 +17,7 @@
       server: "{{ bigip_server }}"
       user: "{{ bigip_username }}"
       password: "{{ bigip_password }}"
+      server_port: "{{ bigip_port }}"
       name: "10.128.20.105"
       host: "10.128.20.105"
       validate_certs: False
@@ -25,6 +27,7 @@
       server: "{{ bigip_server }}"
       user: "{{ bigip_username }}"
       password: "{{ bigip_password }}"
+      server_port: "{{ bigip_port }}"
       name: "ansible_webserver_pool"
       lb_method: "round-robin"
       monitors:
@@ -38,6 +41,7 @@
       server: "{{ bigip_server }}"
       user: "{{ bigip_username }}"
       password: "{{ bigip_password }}"
+      server_port: "{{ bigip_port }}"
       pool: "ansible_webserver_pool"
       host: "10.128.20.104"
       port: 80
@@ -48,6 +52,7 @@
       server: "{{ bigip_server }}"
       user: "{{ bigip_username }}"
       password: "{{ bigip_password }}"
+      server_port: "{{ bigip_port }}"
       pool: "ansible_webserver_pool"
       host: "10.128.20.105"
       port: 80
