@@ -7,7 +7,7 @@
       server: "{{ bigip_server }}"
       user: "{{ bigip_username }}"
       password: "{{ bigip_password }}"
-      server_port: "{{ bigip_port }}"
+      server_port: "8443"
       name: "ansible_webserver_pool"
       lb_method: "round-robin"
       monitors:
