@@ -5,49 +5,43 @@
   gather_facts: false
 
   tasks:
-    - name: CREATE NODES
-      bigip_node:
+    - name: Setting up provider values
+      set_fact:
+       provider:
         server: "{{private_ip}}"
         user: "{{ansible_user}}"
         password: "{{ansible_ssh_pass}}"
         server_port: "8443"
+        validate_certs: "False"
+  
+    - name: CREATE NODES
+      bigip_node:
+        provider: "{{provider}}"
         host: "{{hostvars[item].ansible_host}}"
         name: "{{hostvars[item].inventory_hostname}}"
-        validate_certs: "no"
       loop: "{{ groups['webservers'] }}"
 
     - name: CREATE POOL
       bigip_pool:
-        server: "{{private_ip}}"
-        user: "{{ansible_user}}"
-        password: "{{ansible_ssh_pass}}"
-        server_port: "8443"
+        provider: "{{provider}}"
         name: "http_pool"
         lb_method: "round-robin"
         monitors: "/Common/http"
         monitor_type: "and_list"
-        validate_certs: "no"
 
     - name: ADD POOL MEMBERS
       bigip_pool_member:
-        server: "{{private_ip}}"
-        user: "{{ansible_user}}"
-        password: "{{ansible_ssh_pass}}"
-        server_port: "8443"
+        provider: "{{provider}}"
         state: "present"
         name: "{{hostvars[item].inventory_hostname}}"
         host: "{{hostvars[item].ansible_host}}"
         port: "80"
         pool: "http_pool"
-        validate_certs: "no"
       loop: "{{ groups['webservers'] }}"
 
     - name: ADD VIRTUAL SERVER
       bigip_virtual_server:
-        server: "{{private_ip}}"
-        user: "{{ansible_user}}"
-        password: "{{ansible_ssh_pass}}"
-        server_port: "8443"
+        provider: "{{provider}}"
         name: "vip"
         destination: "{{private_ip}}"
         port: "443"
@@ -55,7 +49,6 @@
         all_profiles: ['http','clientssl','oneconnect']
         pool: "http_pool"
         snat: "Automap"
-        validate_certs: "no"
 
     - name: PRINT OUT WEB VIP FOR F5
       debug:
