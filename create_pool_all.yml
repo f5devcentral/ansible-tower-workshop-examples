@@ -1,0 +1,59 @@
+---
+- hosts: bigip_devices
+  connection: local
+  tasks:
+  - name: Add Webserver A
+    bigip_node:
+       server: "{{ bigip_server }}"
+       user: "{{ bigip_username }}"
+       password: "{{ bigip_password }}"
+       server_port: "8443"
+       name: "10.128.20.104"
+       host: "10.128.20.104"
+       validate_certs: False
+
+  - name: Add Webserver B
+    bigip_node:
+      server: "{{ bigip_server }}"
+      user: "{{ bigip_username }}"
+      password: "{{ bigip_password }}"
+      server_port: "8443"
+      name: "10.128.20.105"
+      host: "10.128.20.105"
+      validate_certs: False
+
+  - name: Create Webserver Pool
+    bigip_pool:
+      server: "{{ bigip_server }}"
+      user: "{{ bigip_username }}"
+      password: "{{ bigip_password }}"
+      server_port: "8443"
+      name: "ansible_webserver_pool"
+      lb_method: "round-robin"
+      monitors:
+      - http
+      - tcp
+      monitor_type: and_list
+      validate_certs: False
+
+  - name: Add Webserver A to Webserver Pool
+    bigip_pool_member:
+      server: "{{ bigip_server }}"
+      user: "{{ bigip_username }}"
+      password: "{{ bigip_password }}"
+      server_port: "8443"
+      pool: "ansible_webserver_pool"
+      host: "10.128.20.104"
+      port: 80
+      validate_certs: False
+
+  - name: Add Webserver A to Webserver Pool
+    bigip_pool_member:
+      server: "{{ bigip_server }}"
+      user: "{{ bigip_username }}"
+      password: "{{ bigip_password }}"
+      server_port: "8443"
+      pool: "ansible_webserver_pool"
+      host: "10.128.20.105"
+      port: 80
+      validate_certs: False

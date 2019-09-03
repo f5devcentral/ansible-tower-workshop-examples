@@ -1,59 +1,53 @@
 ---
-- hosts: bigip_devices
+- name: BIG-IP SETUP
+  hosts: lb
   connection: local
+  gather_facts: false
+
   tasks:
-  - name: Add Webserver A
-    bigip_node:
-       server: "{{ bigip_server }}"
-       user: "{{ bigip_username }}"
-       password: "{{ bigip_password }}"
-       server_port: "8443"
-       name: "10.128.20.104"
-       host: "10.128.20.104"
-       validate_certs: False
+    - name: Setting up provider values
+      set_fact:
+       provider:
+        server: "{{private_ip}}"
+        server_port: "8443"
+        validate_certs: "False"
+  
+    - name: CREATE NODES
+      bigip_node:
+        provider: "{{provider}}"
+        host: "{{hostvars[item].ansible_host}}"
+        name: "{{hostvars[item].inventory_hostname}}"
+      loop: "{{ groups['webservers'] }}"
 
-  - name: Add Webserver B
-    bigip_node:
-      server: "{{ bigip_server }}"
-      user: "{{ bigip_username }}"
-      password: "{{ bigip_password }}"
-      server_port: "8443"
-      name: "10.128.20.105"
-      host: "10.128.20.105"
-      validate_certs: False
+    - name: CREATE POOL
+      bigip_pool:
+        provider: "{{provider}}"
+        name: "http_pool"
+        lb_method: "round-robin"
+        monitors: "/Common/http"
+        monitor_type: "and_list"
 
-  - name: Create Webserver Pool
-    bigip_pool:
-      server: "{{ bigip_server }}"
-      user: "{{ bigip_username }}"
-      password: "{{ bigip_password }}"
-      server_port: "8443"
-      name: "ansible_webserver_pool"
-      lb_method: "round-robin"
-      monitors:
-      - http
-      - tcp
-      monitor_type: and_list
-      validate_certs: False
+    - name: ADD POOL MEMBERS
+      bigip_pool_member:
+        provider: "{{provider}}"
+        state: "present"
+        name: "{{hostvars[item].inventory_hostname}}"
+        host: "{{hostvars[item].ansible_host}}"
+        port: "80"
+        pool: "http_pool"
+      loop: "{{ groups['webservers'] }}"
 
-  - name: Add Webserver A to Webserver Pool
-    bigip_pool_member:
-      server: "{{ bigip_server }}"
-      user: "{{ bigip_username }}"
-      password: "{{ bigip_password }}"
-      server_port: "8443"
-      pool: "ansible_webserver_pool"
-      host: "10.128.20.104"
-      port: 80
-      validate_certs: False
+    - name: ADD VIRTUAL SERVER
+      bigip_virtual_server:
+        provider: "{{provider}}"
+        name: "vip"
+        destination: "{{private_ip}}"
+        port: "443"
+        enabled_vlans: "all"
+        all_profiles: ['http','clientssl','oneconnect']
+        pool: "http_pool"
+        snat: "Automap"
 
-  - name: Add Webserver A to Webserver Pool
-    bigip_pool_member:
-      server: "{{ bigip_server }}"
-      user: "{{ bigip_username }}"
-      password: "{{ bigip_password }}"
-      server_port: "8443"
-      pool: "ansible_webserver_pool"
-      host: "10.128.20.105"
-      port: 80
-      validate_certs: False
+    - name: PRINT OUT WEB VIP FOR F5
+      debug:
+        msg: "The VIP (Virtual IP) is https://{{ansible_host}}"
