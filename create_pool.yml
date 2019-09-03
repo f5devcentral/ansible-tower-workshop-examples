@@ -29,4 +29,3 @@
         port: "80"
         pool: "http_pool"
       loop: "{{ groups['webservers'] }}"
-
