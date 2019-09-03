@@ -12,13 +12,6 @@
         server_port: "8443"
         validate_certs: "False"
   
-    - name: CREATE NODES
-      bigip_node:
-        provider: "{{provider}}"
-        host: "{{hostvars[item].ansible_host}}"
-        name: "{{hostvars[item].inventory_hostname}}"
-      loop: "{{ groups['webservers'] }}"
-
     - name: CREATE POOL
       bigip_pool:
         provider: "{{provider}}"
@@ -37,17 +30,3 @@
         pool: "http_pool"
       loop: "{{ groups['webservers'] }}"
 
-    - name: ADD VIRTUAL SERVER
-      bigip_virtual_server:
-        provider: "{{provider}}"
-        name: "vip"
-        destination: "{{private_ip}}"
-        port: "443"
-        enabled_vlans: "all"
-        all_profiles: ['http','clientssl','oneconnect']
-        pool: "http_pool"
-        snat: "Automap"
-
-    - name: PRINT OUT WEB VIP FOR F5
-      debug:
-        msg: "The VIP (Virtual IP) is https://{{ansible_host}}"
