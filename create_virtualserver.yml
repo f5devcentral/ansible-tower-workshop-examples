@@ -11,7 +11,7 @@
         server: "{{private_ip}}"
         server_port: "8443"
         validate_certs: "False"
-
+  
     - name: ADD VIRTUAL SERVER
       bigip_virtual_server:
         provider: "{{provider}}"
