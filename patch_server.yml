@@ -2,6 +2,7 @@
 - name: Perform software update on node
   hosts: webservers
   gather_facts: false
+  become: yes
   vars:
 
   tasks:
