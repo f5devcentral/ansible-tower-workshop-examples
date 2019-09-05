@@ -1,6 +1,6 @@
 ---
-- name: Perform software update on node - "{{host1}}"
-  hosts: "host1"
+- name: Perform software update on node
+  hosts: webservers
   gather_facts: false
   vars:
 
