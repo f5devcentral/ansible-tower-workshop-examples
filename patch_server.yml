@@ -1,0 +1,13 @@
+---
+- name: Perform software update on node - "{{node_name}}"
+  hosts: "host1"
+  gather_facts: false
+  vars:
+
+  tasks:
+
+   - name: install the latest version of Apache
+     yum:
+       name: httpd
+       state: latest
+     become: yes
