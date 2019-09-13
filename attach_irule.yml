@@ -16,7 +16,7 @@
       bigip_irule:
         provider: "{{provider}}"
         module: "ltm"
-        name: "irule2"
+        name: "irule1"
         content: "{{lookup('file','irule1')}}"
 
     - name: ATTACH iRules TO VIRTUAL SERVER
