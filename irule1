@@ -1,0 +1,11 @@
+when HTTP_REQUEST {
+   HTTP::respond 200 content {
+ <html lang="en">
+     <center>
+ <body text-align: center;>
+     <img src="https://www.ansible.com/hubfs/2017_Images/BrandPage/Brand-Assets/Ansible_RH_AnsibleAutomation_RGB_RedBlack.svg?t=1531946249182"/height="240" width="240">
+     <p><h1>Under Maintenance</h1></p>
+     <footer><h2>Red Hat Ansible Automation</h2></footer></body></center>
+ </html>
+   }
+}

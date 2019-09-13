@@ -12,6 +12,13 @@
         server_port: "8443"
         validate_certs: "False"
 
+    - name: ADD iRules
+      bigip_irule:
+        provider: "{{provider}}"
+        module: "ltm"
+        name: "irule2"
+        content: "{{lookup('file','irule1')}}"
+
     - name: ATTACH iRules TO VIRTUAL SERVER
       bigip_virtual_server:
         provider: "{{provider}}"

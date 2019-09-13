@@ -12,7 +12,7 @@
         server_port: "8443"
         validate_certs: "False"
 
-    - name: ATTACH iRules TO VIRTUAL SERVER
+    - name: DETACH iRules TO VIRTUAL SERVER
       bigip_virtual_server:
         provider: "{{provider}}"
         name: "vip"
