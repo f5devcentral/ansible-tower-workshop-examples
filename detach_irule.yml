@@ -17,3 +17,10 @@
         provider: "{{provider}}"
         name: "vip"
         irules: ""
+
+    - name: DELETE iRules
+      bigip_irule:
+        provider: "{{provider}}"
+        module: "ltm"
+        name: "irule1"
+        state: absent
