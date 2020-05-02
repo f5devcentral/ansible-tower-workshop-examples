@@ -28,4 +28,4 @@
         host: "{{hostvars[item].ansible_host}}"
         port: "80"
         pool: "http_pool"
-      loop: "{{ groups['webservers'] }}"
+      loop: "{{ groups['web'] }}"
