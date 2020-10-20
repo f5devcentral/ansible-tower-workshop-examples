@@ -1,6 +1,6 @@
 ---
 - name: Perform software update on node
-  hosts: webservers
+  hosts: web
   gather_facts: false
   become: yes
   vars:
