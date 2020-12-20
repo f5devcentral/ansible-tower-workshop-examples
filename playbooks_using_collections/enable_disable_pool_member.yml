@@ -6,19 +6,12 @@
 
   collections:
    - f5networks.f5_modules
-
-#  vars:
-#    - pool_name: "http_pool"
-#    - member_name: "node1:80"
-#    - operation: "enable"
-
+   
   tasks:
     - name: Setup provider
       set_fact:
         provider:
           server: "{{private_ip}}"
-#          user: "{{ansible_user}}"
-#          password: "{{ansible_ssh_pass}}"
           server_port: 8443
           validate_certs: false
 
@@ -48,7 +41,7 @@
         query_string: "[?name=='{{pool_name}}'].members[*].name[]"
       when: '"all" in member_name and "disable" in operation'
 
-    - name: Disable pool member {{member_name}}
+    - name: Disable specific pool member
       bigip_pool_member:
         provider: "{{provider}}"
         state: "forced_offline"
@@ -71,7 +64,7 @@
         query_string: "[?name=='{{pool_name}}'].members[*].name[]"
       when: '"all" in member_name and "enable" in operation'
 
-    - name: Enable pool member {{member_name}}
+    - name: Enable specific pool member
       bigip_pool_member:
         provider: "{{provider}}"
         state: "enabled"
