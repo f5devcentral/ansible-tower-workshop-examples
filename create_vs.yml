@@ -3,7 +3,10 @@
   hosts: lb
   connection: local
   gather_facts: false
-
+  
+  collections:
+    - f5networks.f5_modules
+    
   tasks:
     - name: Setting up provider values
       set_fact:
