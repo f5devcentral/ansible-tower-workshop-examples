@@ -16,7 +16,7 @@
         validate_certs: "False"
   
     - name: CREATE NODES
-      bigip_node:
+      f5networks.f5_modules.bigip_node:
         provider: "{{provider}}"
         host: "{{hostvars[item].ansible_host}}"
         name: "{{hostvars[item].inventory_hostname}}"
