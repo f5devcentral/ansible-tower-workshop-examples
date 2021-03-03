@@ -4,8 +4,8 @@
   connection: local
   gather_facts: false
   
-  collections:
-    - f5networks.f5_modules
+ # collections:
+ #   - f5networks.f5_modules
     
   tasks:
     - name: Setting up provider values
@@ -16,7 +16,8 @@
         validate_certs: "False"
   
     - name: CREATE NODES
-      f5networks.f5_modules.bigip_node:
+  #    f5networks.f5_modules.bigip_node:
+       bigip_node:
         provider: "{{provider}}"
         host: "{{hostvars[item].ansible_host}}"
         name: "{{hostvars[item].inventory_hostname}}"
