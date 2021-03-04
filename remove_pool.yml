@@ -1,6 +1,10 @@
 ---
 - hosts: bigip_devices
   connection: local
+  
+  collections:
+    - f5networks.f5_modules
+    
   tasks:
   - name: Create Webserver Pool
     bigip_pool:
