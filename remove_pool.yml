@@ -17,7 +17,7 @@
   - name: Setting up provider values
     set_fact:
       provider:
-      server: "{{private_ip}}"
+        server: "{{ansible_host}}"
       server_port: "{{server_port}}"
       validate_certs: "False"
     when: server_port is defined
