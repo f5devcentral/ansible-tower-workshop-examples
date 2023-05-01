@@ -6,12 +6,25 @@
     - f5networks.f5_modules
     
   tasks:
+
+  - name: Setting up provider values
+    set_fact:
+      provider:
+      server: "{{private_ip}}"
+      server_port: "8443"
+      validate_certs: "False"
+
+  - name: Setting up provider values
+    set_fact:
+      provider:
+      server: "{{private_ip}}"
+      server_port: "{{server_port}}"
+      validate_certs: "False"
+    when: server_port is defined
+
   - name: Create Webserver Pool
     bigip_pool:
-      server: "{{ bigip_server }}"
-      user: "{{ bigip_username }}"
-      password: "{{ bigip_password }}"
-      server_port: "8443"
+      provider: "{{provider}}"
       name: "ansible_webserver_pool"
       lb_method: "round-robin"
       monitors:

@@ -14,7 +14,15 @@
         server: "{{private_ip}}"
         server_port: "8443"
         validate_certs: "False"
-  
+
+    - name: Setting up provider values
+      set_fact:
+       provider:
+        server: "{{private_ip}}"
+        server_port: "{{server_port}}"
+        validate_certs: "False"
+      when: server_port is defined
+
     - name: ADD VIRTUAL SERVER
       bigip_virtual_server:
         provider: "{{provider}}"
