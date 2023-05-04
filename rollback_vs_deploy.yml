@@ -17,7 +17,7 @@
 
     - name: Setting up provider values
       set_fact:
-        provider:
+       provider:
         server: "{{ansible_host}}"
         server_port: "{{server_port}}"
         validate_certs: "False"
