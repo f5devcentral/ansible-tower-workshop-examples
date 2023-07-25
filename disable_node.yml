@@ -27,5 +27,6 @@
       bigip_node:
         provider: "{{provider}}"
         name: "{{hostvars[item].inventory_hostname}}"
+        host: "{{hostvars[item].private_ip}}"
         state: "disabled"
       loop: "{{ groups['web'] }}"
