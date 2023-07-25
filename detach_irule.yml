@@ -24,13 +24,13 @@
       when: server_port is defined
 
     - name: DETACH iRules TO VIRTUAL SERVER
-      bigip_virtual_server:
+      f5networks.f5_modules.bigip_virtual_server:
         provider: "{{provider}}"
         name: "vip"
         irules: ""
 
     - name: DELETE iRules
-      bigip_irule:
+      f5networks.f5_modules.bigip_irule:
         provider: "{{provider}}"
         module: "ltm"
         name: "irule1"
