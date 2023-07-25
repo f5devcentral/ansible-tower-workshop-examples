@@ -36,4 +36,4 @@
 
     - name: PRINT OUT WEB VIP FOR F5
       debug:
-        msg: "The VIP (Virtual IP) is https://{{ansible_host}}"
+        msg: "The VIP (Virtual IP) is https://{{private_ip}}"
